@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Example</title>
+    <style>
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <form id="registrationForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="emailError"></span><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <span class="error" id="passwordError"></span><br><br>
+        
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <span class="error" id="confirmPasswordError"></span><br><br>
+        
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            // Prevent the form from submitting
+            event.preventDefault();
+            
+            // Clear previous error messages
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+            document.getElementById('confirmPasswordError').textContent = '';
+            
+            // Get form values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            let valid = true;
+            
+            // Email validation
+            if (!validateEmail(email)) {
+                document.getElementById('emailError').textContent = 'Invalid email format';
+                valid = false;
+            }
+            
+            // Password validation
+            if (!validatePassword(password)) {
+                document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long, contain at least one number and one uppercase letter';
+                valid = false;
+            }
+            
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
+                valid = false;
+            }
+            
+            // If all validations pass, submit the form
+            if (valid) {
+                alert('Form submitted successfully!');
+                // Here, you can also use form.submit() or make an AJAX request
+            }
+        });
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        function validatePassword(password) {
+            const re = /^(?=.[A-Z])(?=.\d)[A-Za-z\d]{8,}$/;
+            return re.test(String(password));
+        }
+    </script>
+</body>
+</html>
